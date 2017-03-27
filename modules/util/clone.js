@@ -1,3 +1,5 @@
+let {isObject, isLikeArray} = require('./type')
+
 let stack = []
 
 /**
@@ -56,14 +58,6 @@ function copyArray (arr, res, deep) {
     }
   }
   return res
-}
-
-function isObject (obj) {
-  return obj !== null && typeof obj === 'object'
-}
-
-function isLikeArray (obj) {
-  return isObject(obj) && typeof obj.length == 'number'
 }
 
 module.exports = copy
