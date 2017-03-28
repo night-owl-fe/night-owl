@@ -26,13 +26,20 @@ let myModule = {
 
 // 这是对对象字面值的改进, 对象字面值会暴漏出所有属性
 // 在ES6之前只有函数作用域, 通过立即执行函数来实现局部变量
-let myModule2 = function () {
-
+let myModule2 = function (mym) {
   let counter = 0
 
   return {
+    mym: mym,
+
     incrementCounter () {
       return counter++
+    },
+
+    getCounter () {
+      return counter
     }
   }
-}()
+}(myModule)
+
+module.exports = myModule2
