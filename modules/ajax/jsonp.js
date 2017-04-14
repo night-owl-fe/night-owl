@@ -10,12 +10,11 @@ module.exports = function jsonp (url, options = {}) {
 
   // callbackName: 请求的回调函数的名字
   let {
-        url,
         name = 'callback',
-        callbackName = '__wuage' + uid++,
+        callbackName = '__wuagecallback' + uid++,
         timeout = 60000
       } = options
-
+  url = options.url
   let script = document.createElement('script')
   let responseData
   let abortTimeout
@@ -42,7 +41,7 @@ module.exports = function jsonp (url, options = {}) {
       reject(e)
     }
 
-    url = (~url.indexOf('?') ? '&' : '?') + name + '=' + callbackName
+    url += (~url.indexOf('?') ? '&' : '?') + name + '=' + callbackName
     url = url.replace('?&', '?')
     script.src = url
     document.head.appendChild(script)
