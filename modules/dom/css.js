@@ -1,4 +1,4 @@
-import prop from './prop'
+import getComputedStyle from './style'
 import {
   camelize,
   dasherize,
@@ -20,11 +20,11 @@ export default function css (el, property, value) {
   // 读取css属性，默认先从style读取，没有才从prop读取
   if (arguments.length < 3) {
     if (typeof property === 'string') {
-      return el.style[camelize(property)] || prop(property)
+      return el.style[camelize(property)] || getComputedStyle(property)
     } else if (Array.isArray(property)) {
       var props = {}
       property.forEach(function (prop) {
-        props[prop] = (el.style[camelize(prop)] || el.prop(prop))
+        props[prop] = (el.style[camelize(prop)] || getComputedStyle(el, prop))
       })
       return props
     }

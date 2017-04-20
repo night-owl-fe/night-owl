@@ -12,6 +12,10 @@ export function isPlainObject (obj) {
   return isObject(obj) && !isWindow(obj) && Object.getPrototypeOf(obj) == Object.prototype;
 }
 
+export function isDocument (obj) {
+  return obj != null && obj.nodeType == obj.DOCUMENT_NODE
+}
+
 // my-name ==> myName
 export function camelize (str) {
   return str.replace(/-+(.)?/g, function (match, chr) {
