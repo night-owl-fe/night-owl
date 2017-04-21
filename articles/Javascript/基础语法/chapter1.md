@@ -1,0 +1,30 @@
+# 类型判断
+
+javascript提供一个typeof操作符来判断值的类型，随着ES6，ES7出现了更多类型
+1. 数据类型
+* String
+* Number
+* Boolean
+* Null
+* Undefined
+* Symbol
+* Object
+2. 其中Object（引用类型）又细分
+* Arguments
+* Array
+* Buffer
+* ArrayBuffer
+* Date
+* Element
+* Error
+* Function
+* Integer
+* Map
+* NaN
+* Object
+* RegExp
+* Set
+* Symbol
+* Undefined
+* WeakMap
+* WeakSet
