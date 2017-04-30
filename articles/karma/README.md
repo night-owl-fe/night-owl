@@ -189,3 +189,7 @@ expect http://chaijs.com/api/bdd/
 断言库 https://github.com/domenic/sinon-chai/
 ## jasmine karma-jasmine
 测试框架 https://jasmine.github.io/
+## Jest
+https://facebook.github.io/jest/
+## ava
+https://github.com/avajs/ava/
