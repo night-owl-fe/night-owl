@@ -161,6 +161,8 @@ App := View(Model(Intent({ DOM, Http, WebSocket })))
 
 ### Redux
 
+<img src="./redux.png" height="400"/>
+
 ### Vuex
 
 <img src="./vuex.png" height="400"/>
@@ -170,6 +172,34 @@ App := View(Model(Intent({ DOM, Http, WebSocket })))
 <img src="./mobx.png" height="400"/>
 
 ### Vue VS React + MobX
+```javascript
+// vue
+const vm = new Vue({
+  data: {
+    firstName: 'Foo',
+    lastName: 'Bar'
+  },
+  computed: {
+    fullName () {
+      return this.firstName + ' ' + this.lastName
+    }
+  }
+})
+
+// mobx
+import {observable, computed} from 'mobx'
+class Store {
+  @observable firstName = 'Foo'
+  @observable lastName = 'Bar'
+
+  @computed get fullName() {
+    return `${this.firstName} ${this.lastName}
+  }
+}
+
+const data = new Store()
+
+```
 
 ### vue-rx
 
