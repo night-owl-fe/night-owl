@@ -1,5 +1,7 @@
 # 单页应用的数据流方案探究
 
+[2017QCon分享](http://ppt.geekbang.org/slide/show/776)
+
 ### 组件化
 
 > [MDN的web component定义](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
@@ -53,40 +55,117 @@
 
 > 组件间通信
 
-![avatar](./props-events.png)
+<img src="./props-events.png" height="200"/>
 
 * 父组件通过props传递给子组件
 * 子组件通过事件通知父组件
 * props可以多级传递
 
-> 问题
+> 存在的问题
 
-组件嵌套太深，数据传递繁琐，兄弟组件之间如何通信
+* 组件嵌套太深，数据传递繁琐
+* 兄弟组件之间如何通信
+* 非父子非兄弟的跨分支的组件怎么通信
+
+简单来说就是：
+* 多个views依赖同一个state
+* 多个views需要修改同一个state
+
+> 解决方案
+
+将 state 外置，统一管理，整个应用的 state 组成一个 store，
+所有的组件引用同一个 store，一个 state 变化就通知相应的组件更新
+
+> 组件如何管理状态
+
+* 一切状态内置，组件自己管理自己状态
+* 一切状态外置，组件不管理自己状态
+* 部分内置，由组件自己管理，另外一些由全局Store管理
+
+它们的差别是：组件究竟是纯展示，还是带一些逻辑。
+
+> 状态完全内置
+
+这种组件一般比较简单，可能只是静态展示（没有状态），如果业务比较复杂，
+说明你需要将该组件拆分成多个子组件
+
+> 状态完全外置
+
+React纯展示组件：
+```javascript
+
+const Hello = ({name}) => <h1>Hello {name}</h1>
+
+```
+
+Vue纯展示组件：
+```javascript
+
+const Hello = {
+ functional: true,
+ props: ['name'],
+ render (h, { props }) {
+   return <h1>Hello {props.name}</h1>
+ }
+}
+
+```
+
+这种组件的优势是，只做展示层，展示层只和输入的数据有关，复杂的业务逻辑交给外部统一处理
+
+> 部分外置
+
+当一个组件业务复杂起来，会有事件，生命周期，如果把一些自身私有的状态外置会有几个问题
+
+* 这样的状态只跟某组件自己有关，放出去到全局Store，会增加Store的不必要的复杂度
+* 组件的自身形态状态被外置，将导致组件与状态的距离变远，从而对这些状态的读写变得比原先繁琐
+* 带交互的组件，无法独立、完整地描述自身的行为，必须借助外部管理器
+
+> 如何实现将外置的状态和组件结合
+
+在React中是以props传递的，如React + Redux
+
+```javascript
+
+```
+
+在Vue中是以计算属性传递的，如Vue + Vuex
+
+```javascript
+
+```
+
+### MVI架构
+
+> [cycle.js理念](https://cycle.js.org/)
+
+* 一切都是事件源
+* 使用Reactive的理念构建程序的骨架
+* 使用sink来定义应用的逻辑
+* 使用driver来隔离有副作用的行为（网络请求、DOM渲染）
+
+基于这套理念，编写代码的方式可以变得很简洁流畅：
+* 从driver中获取action
+* 把action映射成数据流
+* 处理数据流，并且渲染成界面
+* 从界面的事件中，派发action去进行后续事项的处理
+
+```
+App := View(Model(Intent({ DOM, Http, WebSocket })))
+
+```
+
+* Intent，负责从外部的输入中，提取出所需信息
+* Model，负责从Intent生成视图展示所需的数据
+* View，负责根据视图数据渲染视图
 
 ### Redux
 
 ### Vuex
 
+### MobX
 
+### Vue VS React + MobX
 
+### vue-rx
 
-
-
-
-
-
-```
-单页应用的数据流方案探究
-数据驱动视图
-view = f(state)
-view + Δview = f(state + Δstate)
-
-
-
-Vue VS React + MobX
-
-rxjs
-
-vue-rx
-
-```
