@@ -163,7 +163,11 @@ App := View(Model(Intent({ DOM, Http, WebSocket })))
 
 ### Vuex
 
+<img src="./vuex.png" height="400"/>
+
 ### MobX
+
+<img src="./mobx.png" height="400"/>
 
 ### Vue VS React + MobX
 
