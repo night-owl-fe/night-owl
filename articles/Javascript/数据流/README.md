@@ -40,10 +40,10 @@
 > 将这些变化的状态和最初的状态叠加起来就是当前的状态，这也是Redux的核心理念
 
 ```
-  state := states.reduce(Δstate, initState)
+  state := reduce(Δstate, initState)
 ```
 
-数据的变化导致视图变化，怎么收集和组织这些变化数据源，特别是一些异步处理
+数据的变化导致视图变化，怎么收集和组织这些变化数据源呢?
 
 ### Reactive Programming
 
@@ -125,39 +125,7 @@ const Hello = {
 
 在React中是以props传递的，如React + Redux
 
-```javascript
-
-```
-
 在Vue中是以计算属性传递的，如Vue + Vuex
-
-```javascript
-
-```
-
-### MVI架构
-
-> [cycle.js理念](https://cycle.js.org/)
-
-* 一切都是事件源
-* 使用Reactive的理念构建程序的骨架
-* 使用sink来定义应用的逻辑
-* 使用driver来隔离有副作用的行为（网络请求、DOM渲染）
-
-基于这套理念，编写代码的方式可以变得很简洁流畅：
-* 从driver中获取action
-* 把action映射成数据流
-* 处理数据流，并且渲染成界面
-* 从界面的事件中，派发action去进行后续事项的处理
-
-```
-App := View(Model(Intent({ DOM, Http, WebSocket })))
-
-```
-
-* Intent，负责从外部的输入中，提取出所需信息
-* Model，负责从Intent生成视图展示所需的数据
-* View，负责根据视图数据渲染视图
 
 ### Redux
 
@@ -202,4 +170,29 @@ const data = new Store()
 ```
 
 ### vue-rx
+
+
+### MVI架构
+
+> [cycle.js理念](https://cycle.js.org/)
+
+* 一切都是事件源
+* 使用Reactive的理念构建程序的骨架
+* 使用sink来定义应用的逻辑
+* 使用driver来隔离有副作用的行为（网络请求、DOM渲染）
+
+基于这套理念，编写代码的方式可以变得很简洁流畅：
+* 从driver中获取action
+* 把action映射成数据流
+* 处理数据流，并且渲染成界面
+* 从界面的事件中，派发action去进行后续事项的处理
+
+```
+App := View(Model(Intent({ DOM, Http, WebSocket })))
+
+```
+
+* Intent，负责从外部的输入中，提取出所需信息
+* Model，负责从Intent生成视图展示所需的数据
+* View，负责根据视图数据渲染视图
 
