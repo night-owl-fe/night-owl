@@ -51,6 +51,28 @@
 * [xstream](https://github.com/staltz/xstream)
 * [most](https://github.com/cujojs/most)
 
+> RxJS
+
+* Observable 可观察对象/被观察者：可以是一个数值，事件，总之是可以产生数据的生产者 
+* Observer 观察者：回调函数，消费Observable传来的数据
+* Subscription 订阅：取消观察者执行
+* Operators 操作符：对Observable传来的数据流进行处理，是纯函数
+* Subject 主题：等同于EventEmitter
+* Schedulers 调度者：调度者控制着何时启动一个订阅和何时通知被发送，setTimeout，requestAnimationFrame
+
+> Observable
+
+* 创建可观察对象
+1. Observable.create 内部产生新事件
+2. new Rx.Subject() 外部产生新事件
+* 转换为可观察对象
+1. Observable.of 1个或多个数值
+2. Observable.from 数组
+3. Observable.fromEvent dom事件
+4. Observable.fromPromise Promise
+5. Observable.bindCallback 正常回调，第一个参数是结果
+6. Observable.bindNodeCallback Node中的回调，第一个参数是Error
+
 ### 组件与状态
 
 > 组件间通信
