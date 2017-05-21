@@ -3,5 +3,17 @@ public static bindCallback(func: function, selector: function, scheduler: Schedu
 
 #### Params:
 
-| Name | Type | Attribute | Description
-| func | function | Attribute | 最后一个参数是回调函数
+<table>
+   <tr>
+       <th>Name</th>
+       <th>Type</th>
+       <th>Attribute</th>
+       <th>Description</th>
+   </tr>
+   <tr>
+      <td>func</td>
+      <td>function</td>
+      <td></td>
+      <td>最后一个参数必须是回调函数</td>
+   </tr>
+</table>   
