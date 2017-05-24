@@ -2,6 +2,9 @@
 public static bindCallback(func: function, selector: function, scheduler: Scheduler): function(...params: *): Observable
 
 将以回调函数为API的函数转换为Observable。
+
+> func(x, callback) --> bindCallback(func) --> g(x) --> Observable
+
 bindCallback并不是一个operator， 因为他的输入和输出是不可以被观察的，他的输入是一个带有参数的函数，而且
 这些参数的最后一个必须是回调函数，当执行完毕时供func调用。
 
@@ -16,7 +19,7 @@ ajax请求时，每次被订阅都发送新的请求，而不是之前的。
 观察者使用。selector函数像一个预处理器，在默认情况下（用户的selector为null），当回调函数有一个值时，就直接返回这个值，当有多个值是，将其
 处理成一个数组返回
 
-参数[scheduler](http://reactivex.io/rxjs/class/es6/Scheduler.js~Scheduler.html)：
+参数scheduler：
 用来控制回调函数何时被调用，默认是同步的，通过使用Scheduler.async来实现异步调用,在某种意义上,最好总是使用异步，
 来避免可怕的Zalgo
 
@@ -106,7 +109,7 @@ stream$.subscribe(value => {
 function iCallMyCallbackSynchronously (cb) {
   console.log('[async]', 'cb')
   cb();
-  // 这次不执行
+  // 这次执行无效
   cb();
 }
 
