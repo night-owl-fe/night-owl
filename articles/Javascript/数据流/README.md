@@ -45,34 +45,6 @@
 
 数据的变化导致视图变化，怎么收集和组织这些变化数据源呢?
 
-### Reactive Programming
-
-* [RxJS](https://github.com/Reactive-Extensions/RxJS)
-* [xstream](https://github.com/staltz/xstream)
-* [most](https://github.com/cujojs/most)
-
-> RxJS
-
-* Observable 可观察对象/被观察者：可以是一个数值，事件，总之是可以产生数据的生产者 
-* Observer 观察者：回调函数，消费Observable传来的数据
-* Subscription 订阅：取消观察者执行
-* Operators 操作符：对Observable传来的数据流进行处理，是纯函数
-* Subject 主题：等同于EventEmitter
-* Schedulers 调度者：调度者控制着何时启动一个订阅和何时通知被发送，setTimeout，requestAnimationFrame
-
-> Observable
-
-* 创建可观察对象
-1. Observable.create 内部产生新事件
-2. new Rx.Subject() 外部产生新事件
-* 转换为可观察对象
-1. Observable.of 1个或多个数值
-2. Observable.from 数组
-3. Observable.fromEvent dom事件
-4. Observable.fromPromise Promise
-5. Observable.bindCallback 正常回调，第一个参数是结果
-6. Observable.bindNodeCallback Node中的回调，第一个参数是Error
-
 ### 组件与状态
 
 > 组件间通信
@@ -153,6 +125,11 @@ const Hello = {
 
 <img src="./redux.png" height="400"/>
 
+* 问题
+1. 在触发reducer的时候，我们是精确知道要修改state的什么位置的
+2. 合并完reducer之后，输出结果是完整的state对象，已经不知道state的什么地方被修改过了
+3. 视图组件必须精确拿到变更的地方，才能排除无效的变更
+
 ### Vuex
 
 <img src="./vuex.png" height="400"/>
@@ -191,12 +168,54 @@ const data = new Store()
 
 ```
 
+### Reactive Programming
+
+* [RxJS](https://github.com/Reactive-Extensions/RxJS)
+* [xstream](https://github.com/staltz/xstream)
+* [most](https://github.com/cujojs/most)
+
+> RxJS
+
+* Observable 可观察对象/被观察者：可以是一个数值，事件，总之是可以产生数据的生产者 
+* Observer 观察者：回调函数，消费Observable传来的数据
+* Subscription 订阅：取消观察者执行
+* Operators 操作符：对Observable传来的数据流进行处理，是纯函数
+* Subject 主题：等同于EventEmitter
+* Schedulers 调度者：调度者控制着何时启动一个订阅和何时通知被发送，setTimeout，requestAnimationFrame
+
+> Observable
+
+* 创建可观察对象
+1. Observable.create 内部产生新事件
+2. new Rx.Subject() 外部产生新事件
+* 转换为可观察对象
+1. Observable.of 1个或多个数值
+2. Observable.from 数组
+3. Observable.fromEvent dom事件
+4. Observable.fromPromise Promise
+5. Observable.bindCallback 正常回调，第一个参数是结果
+6. Observable.bindNodeCallback Node中的回调，第一个参数是Error
+
 ### vue-rx
+Simple RxJS binding for Vue.js
+
+### redux-observable
+RxJS + Redux + React = Amazing
 
 
 ### MVI架构
 
 > [cycle.js理念](https://cycle.js.org/)
+
+```
+App := View(Model(Intent({ DOM, Http, WebSocket })))
+
+```
+
+* Intent，负责从外部的输入中，提取出所需信息
+* Model，负责从Intent生成视图展示所需的数据
+* View，负责根据视图数据渲染视图
+
 
 * 一切都是事件源
 * 使用Reactive的理念构建程序的骨架
@@ -209,14 +228,6 @@ const data = new Store()
 * 处理数据流，并且渲染成界面
 * 从界面的事件中，派发action去进行后续事项的处理
 
-```
-App := View(Model(Intent({ DOM, Http, WebSocket })))
-
-```
-
-* Intent，负责从外部的输入中，提取出所需信息
-* Model，负责从Intent生成视图展示所需的数据
-* View，负责根据视图数据渲染视图
 
 redux记录每次状态的改变，将这些变化的状态整合到一起，生成一个完整的状态，
 将这些状态提供给第三方组件使用。在每份状态变化时，我们是知道具体变化，
