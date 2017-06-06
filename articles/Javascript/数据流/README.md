@@ -196,6 +196,35 @@ const data = new Store()
 5. Observable.bindCallback 正常回调，第一个参数是结果
 6. Observable.bindNodeCallback Node中的回调，第一个参数是Error
 
+
+> Operators
+* Transformation Operators
+1. map
+2. pluck
+3. scan
+
+* Filtering Operators
+1. filter
+2. debounceTime
+3. take
+
+* Combination Operators
+1. merge
+2. concat
+3. zip
+
+
+> 优点
+
+* 对事件的高度抽象
+* 同步和异步的统一化处理
+* 数据变更的持续订阅（订阅模式）
+* 数据的连续变更（管道拼接）
+* 数据变更的的组合运算（管道组合）
+* 懒执行（无订阅者，则不执行）
+* 缓存的中间结果
+* 可重放的历史记录
+
 ### vue-rx
 Simple RxJS binding for Vue.js
 
@@ -227,6 +256,13 @@ App := View(Model(Intent({ DOM, Http, WebSocket })))
 * 把action映射成数据流
 * 处理数据流，并且渲染成界面
 * 从界面的事件中，派发action去进行后续事项的处理
+
+### Model的结构
+
+* 打平了的数据，尽可能以id这样的key去索引
+* 贴近视图的数据
+
+(normalizr)[https://github.com/paularmstrong/normalizr]
 
 ### 其他
 redux记录每次状态的改变，将这些变化的状态整合到一起，生成一个完整的状态，
