@@ -64,6 +64,7 @@ describe("Type", function () {
       expect(isNumber(Number.MIN_VALUE)).to.be.ok
       expect(isNumber(Infinity)).to.be.ok
       expect(isNumber(NaN)).to.be.ok
+      expect(isNumber(0)).to.be.ok
       expect(isNumber('1')).to.not.be.ok
       expect(isNumber(arguments)).to.not.be.ok
       expect(isNumber(void 0)).to.not.be.ok
