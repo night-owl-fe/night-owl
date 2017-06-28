@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta lang="zh">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="description" content="">
+  <meta name="keyword" content="">
+  <title></title>
+</head>
+<body>
+<script src="hash.js"></script>
+<script src="decode.js"></script>
+<script src="encode.js"></script>
+<script>
+  performance.mark('hashStart')
+  const history = new HashHistory()
+
+  history.onChange(function (hashMap) {
+    console.log(hashMap)
+  })
+
+
+  history.push('a', 'b')
+  history.push('b', 'c')
+  performance.mark('hashEnd')
+  performance.measure('hashTime', 'hashStart', 'hashEnd')
+  var time = performance.getEntriesByType('measure')
+  console.log(time)
+</script>
+</body>
+</html>
