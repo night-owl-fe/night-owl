@@ -8,6 +8,9 @@
   <meta name="description" content="">
   <meta name="keyword" content="">
   <title></title>
+  <style>
+
+  </style>
 </head>
 <body>
 <script src="hash.js"></script>
@@ -15,6 +18,8 @@
 <script src="encode.js"></script>
 <script>
   performance.mark('hashStart')
+
+
   const history = new HashHistory()
 
   history.onChange(function (hashMap) {
@@ -28,6 +33,7 @@
   performance.measure('hashTime', 'hashStart', 'hashEnd')
   var time = performance.getEntriesByType('measure')
   console.log(time)
+  document.querySelector()
 </script>
 </body>
 </html>
