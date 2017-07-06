@@ -1,17 +1,29 @@
-var State = require('./state')
+var {
+  pushTarget,
+  popTarget,
+  Dep
+} = require('./dep')
 class Watcher {
-  constructor (fn, callback, options) {
-    this._getter = fn
-    this._callback = callback
+  constructor (getter, cb, options) {
+    this.active = true
+    this.getter = getter
+    this.cb = cb
+    this.value = this.get()
   }
 
-  get value () {
-    State.target = this
-    return this._getter()
+  get () {
+    pushTarget(this)
+    let value = this._getter()
+    popTarget()
+    return value
   }
 
   run () {
-    this._callback(this.value)
+    let oldValue = this.value
+    this.value = this.get()
+    if (oldValue !== this.value) {
+      this.cb(this.value, oldValue)
+    }
   }
 }
 

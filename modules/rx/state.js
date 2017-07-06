@@ -1,17 +1,20 @@
 var _ = require('lodash')
+var Dep = require('./dep')
 
 class State {
   constructor (initialState) {
     this.propsMap = {}
     let state = _.cloneDeep(initialState)
-    if (!_.isPlainObject(state)) {
+    if (!_.isObject(state)) {
       state = Object.create(null)
     }
+    this.data = state
     const _this = this
+
     return new Proxy(state, {
-      get (target, property, receiver) {
-        _this.addDep(property)
-        return target[property]
+      get (target, property) {
+        var res = target[property]
+        return res
       },
 
       set (target, property, value) {
@@ -19,22 +22,6 @@ class State {
         _this.notify(property)
       }
     })
-  }
-
-  addDep (key) {
-    if (State.target) {
-      const set = this.propsMap.hasOwnProperty(key) ? this.propsMap[key] : new Set()
-      set.add(State.target)
-      this.propsMap[key] = set
-    }
-  }
-
-  notify (key) {
-    const set = this.propsMap[key]
-    if (!set) return
-    for (let watcher of set.values()) {
-      watcher.run()
-    }
   }
 }
 
