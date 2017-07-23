@@ -17,23 +17,15 @@
 <script src="decode.js"></script>
 <script src="encode.js"></script>
 <script>
-  performance.mark('hashStart')
-
-
   const history = new HashHistory()
 
   history.onChange(function (hashMap) {
     console.log(hashMap)
+    history.push({ 'b': 'c', d: 'e' })
   })
 
-
-  history.push('a', 'b')
-  history.push('b', 'c')
-  performance.mark('hashEnd')
-  performance.measure('hashTime', 'hashStart', 'hashEnd')
-  var time = performance.getEntriesByType('measure')
-  console.log(time)
-  document.querySelector()
+  history.push({ 'a': 'b' })
+  history.push({ 'b': 'c', d: 'e' })
 </script>
 </body>
 </html>

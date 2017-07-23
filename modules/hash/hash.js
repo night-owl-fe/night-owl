@@ -17,8 +17,12 @@ class HashHistory {
 
   push (key, value) {
     if (isObject(key)) {
+      var oldHashMap = {}
+      clone(oldHashMap, this.hashMap)
       clone(this.hashMap, key)
+      if (isPlainEqual(this.hashMap, oldHashMap)) return this
     } else {
+      if (this.hashMap[key] === value) return this
       this.hashMap[key] = value
     }
     this.hash = encode(this.hashMap)
@@ -69,4 +73,8 @@ function clone (dist, src) {
   for (let key in src) {
     dist[key] = src[key]
   }
+}
+
+function isPlainEqual (a, b) {
+  return JSON.stringify(a) === JSON.stringify(b)
 }
