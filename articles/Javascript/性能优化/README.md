@@ -1,3 +1,57 @@
+# 性能优化
+
+1. 减少HTTP请求
+    * 合并css、js
+    * 合并图片
+    * 图片懒加载
+    * 异步加载js
+    * 合并css/js：nginx-concat， combo的url
+
+2. cdn
+    * 设置比较长的过期时间
+    * 静态资源独立域名
+    * http2 （减少3次握手，浏览器不限制请求次数）
+    * 域名收敛 （使用http2，域名尽量减少）
+    
+3. 代码优化    
+    * html懒加载改造
+    * 减少css大小（去掉base64图片）减少js大小（去掉没用的代码，对于引入的一些工具库，不建议全量引入，可按需引入）
+    * 避免在dom ready之前动态插入script
+    * css在head中，js在body底部
+    * 减少对DOM的操作（如列表，一次添加全部）
+    * 压缩合并（webpack/gulp）
+    
+4. css优化
+    * 去掉base64图片，改成雪碧图
+    * 不使用*选择器
+    * 避免不必要的嵌套，最多不要超过3层
+    * 尽量使用class选择器
+    * 只有在必要的时候才将 class 限制在最近的父元素内
+    
+5. js优化
+    * 对高频触发的事件进行节流（debounce）或消抖（throttle）
+    * 批量操作 DOM
+    * requestAnimationFrame
+    * 使用 transform 和 opacity 来完成动画
+    * 按需加载资源
+    * service workers
+
+6. Vue优化
+    * 如果<template>中有大量静态代码，可以提取出放在一个单独的组件中（或使用v-once），避免vue检测到数据变化时重新渲染不会改变的静态代码。（如果放在单独的组件中，不会重新渲染）
+    * 在vue中使用for循环时，尽量添加key属性
+    * 尽量使用vue的运行时环境
+    * 使用refs获取dom元素
+    
+7. jQuery优化
+    * 尽量使用 ID 代替 class
+    * 给选择器一个上下文
+    * 缓存 jQuery 对象与链式调用
+    * 使用 DocumentFrame 的思想
+    * 事件的委托处理
+    * 最好直接使用原生API操作DOM
+    
+    
+    
 # 五阿哥首页优化
    
     1、合并css、js

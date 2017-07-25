@@ -1,6 +1,6 @@
 # javascript regex
 https://juejin.im/post/5965943ff265da6c30653879
-
+https://zhuanlan.zhihu.com/p/27653434
 ## 正则是匹配模式，要么匹配字符，要么匹配位置
 ## 在正则中可以使用括号捕获数据，要么在API中进行分组引用，要么在正则里进行反向引用
 ## 6个锚字符 ^ $ \b \B (?=p) (?!p) (?<=p) (?<!p)
