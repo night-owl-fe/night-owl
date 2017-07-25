@@ -51,7 +51,7 @@
     * 在vue中使用for循环时，尽量添加key属性
     * 尽量使用vue的运行时环境
     * 使用refs获取dom元素
-        
+    
 8. jQuery优化
     * 尽量使用 ID 代替 class
     * 给选择器一个上下文
