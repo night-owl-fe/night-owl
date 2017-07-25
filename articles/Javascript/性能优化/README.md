@@ -21,14 +21,24 @@
     * 减少对DOM的操作（如列表，一次添加全部）
     * 压缩合并（webpack/gulp）
     
-4. css优化
+4. html优化
+    * 使用无协议的url
+    * 删除注释
+    * 压缩空白符
+    * 压缩inline css & Javascript
+    * CSS&Javascript尽量外链
+    * 删除元素默认属性
+    * 去掉没用的标签，减少标签的使用
+    * 以上目的是减少代码量
+    
+5. css优化
     * 去掉base64图片，改成雪碧图
     * 不使用*选择器
     * 避免不必要的嵌套，最多不要超过3层
     * 尽量使用class选择器
     * 只有在必要的时候才将 class 限制在最近的父元素内
     
-5. js优化
+6. js优化
     * 对高频触发的事件进行节流（debounce）或消抖（throttle）
     * 批量操作 DOM
     * requestAnimationFrame
@@ -36,13 +46,13 @@
     * 按需加载资源
     * service workers
 
-6. Vue优化
+7. Vue优化
     * 如果<template>中有大量静态代码，可以提取出放在一个单独的组件中（或使用v-once），避免vue检测到数据变化时重新渲染不会改变的静态代码。（如果放在单独的组件中，不会重新渲染）
     * 在vue中使用for循环时，尽量添加key属性
     * 尽量使用vue的运行时环境
     * 使用refs获取dom元素
-    
-7. jQuery优化
+        
+8. jQuery优化
     * 尽量使用 ID 代替 class
     * 给选择器一个上下文
     * 缓存 jQuery 对象与链式调用
