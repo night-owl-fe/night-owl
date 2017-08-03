@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>html5文件上传测试</title>
+    <script src="html5-file-uploader.js"></script>
+</head>
+<body>
+<div>
+    <img src="" alt="" width="200px" class="picker">
+</div>
+<div>
+    <img src="" alt="选择图片" width="200px">
+</div>
+<!--<input type="file" class="j-file">-->
+<!--<input type="file" name="wanglei" class="j-file">-->
+<!--<input type="file" name="wanglei2" multiple class="j-file">-->
+
+<script>
+    WebUploader.config.debug = true;
+    var webUploader = new WebUploader({
+        auto: true,
+        pick: '.picker',
+//        el: '.j-file',
+        fileSingleSizeLimit: 1024 * 1024 * 1,
+        allowFile: ['image/jpeg'],
+        url: '/logisticscarriers/upload',
+        success: function (data, file) {
+            console.log(data.uid);
+            console.log(data.messageId);
+            console.log(data.fileUrl);
+            console.log(data.message);
+            this.$picker.src = data.fileUrl;
+        },
+        error: function (msg) {
+            console.log(msg);
+        },
+        addAfter: function (uid, file) {
+            this.$picker.id = 'F_' + uid;
+        }
+    });
+</script>
+</body>
+</html>

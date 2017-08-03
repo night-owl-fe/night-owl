@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta lang="zh">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="description" content="">
+  <meta name="keyword" content="">
+  <title></title>
+  <style>
+    #canvas {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="300x"></canvas>
+<script>
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext("2d");
+
+  function draw (x, y, xdis, ydis) {
+    context.moveTo(x, y);
+    context.bezierCurveTo(x, y, x + xdis / 2, y - ydis, x + xdis, y);
+    context.stroke();
+    context.quadraticCurveTo(x + xdis * 3 / 2, y + ydis, x + xdis * 2, y);
+    context.stroke();
+  }
+
+  ctx.lineWidth = 10
+  ctx.beginPath();
+  ctx.arc(100, 75, 50, -1 / 2 * Math.PI, 1 / 2 * Math.PI);
+  ctx.stroke();
+
+</script>
+</body>
+</html>
