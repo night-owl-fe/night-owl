@@ -1,6 +1,5 @@
 const objectProto = Object.prototype
 const toString = (obj) => objectProto.toString.call(obj)
-const funcToString = (obj) => Function.prototype.toString.call(obj)
 
 export function isNull (obj) {
   return obj === null
