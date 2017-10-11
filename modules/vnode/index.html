@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta lang="zh">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="description" content="">
+  <meta name="keyword" content="">
+  <title></title>
+</head>
+<body>
+<script src="vnode.js"></script>
+<script>
+  const ntree = h('div', { class: 'container' }, [
+    h('ul', { id: 'list' }, [
+      h('li', { key: 1 }, 'hello'),
+      h('li', { key: 2 }, 'world')
+    ]),
+    h('h1', null, 'wowo just wowo'),
+    h('p', null, 'say sorry')
+  ])
+
+  const el = ntree.render()
+  document.body.appendChild(el)
+</script>
+</body>
+</html>
