@@ -95,10 +95,6 @@ function removeCurlyBraces (str) {
 }
 
 function replaceCurlyBraces (str) {
-  return str.replace(/[{}]/g, '')
-}
-
-function replaceCurlyBraces (str) {
   if (!str) return ''
   const res = curlyBracesTag.exec(str)
   if (!res || !res[2]) return str
