@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta lang="zh">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="description" content="">
+  <meta name="keyword" content="">
+  <title></title>
+  <style>
+    /*
+      display: none
+      所有属性都忽略，包括position，float
+      position：absolute/fixed
+      display一定等于block，display设置失效
+      float: none
+      float:left/right
+      display一定等于block，display设置失效
+    */
+    .box {
+      display: block;
+      float: right;
+      width: 100px;
+      height: 100px;
+      background: #cc3333;
+    }
+  </style>
+</head>
+<body>
+<div class="box"></div>
+<span class="box"></span>
+</body>
+</html>
