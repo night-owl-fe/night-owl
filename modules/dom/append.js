@@ -1,6 +1,6 @@
 import { fragment } from './fragment'
 export default function append (self, el) {
-  if (el instanceof Node) {
+  if (el instanceof HTMLElement) {
     self.appendChild(el);
   } else if (typeof el === 'string') {
     el = fragment(el);

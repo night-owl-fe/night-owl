@@ -18,7 +18,7 @@ import {
  */
 export default function css (el, property, value) {
   // 读取css属性，默认先从style读取，没有才从prop读取
-  if (arguments.length < 3) {
+  if (value === undefined) {
     if (typeof property === 'string') {
       return el.style[camelize(property)] || getComputedStyle(property)
     } else if (Array.isArray(property)) {

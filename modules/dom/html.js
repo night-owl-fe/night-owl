@@ -1,5 +1,5 @@
 export default function html (el, html) {
-  return html === undefined
-    ? el.innerHTML
-    : el.innerHTML = html
+  if (html === undefined) return el.innerHTML
+  el.innerHTML = html
+  return el
 }

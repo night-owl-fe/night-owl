@@ -1,7 +1,7 @@
 import { isPlainObject } from './util'
 export default function attr (el, name, value) {
-  if (el.nodeType !== 1) return
-  if (typeof name == 'string' && !(2 in arguments)) {
+  if (el.nodeType !== 1) return el
+  if (typeof name === 'string' && !(2 in arguments)) {
     return el.getAttribute(name)
   } else {
     if (isPlainObject(name)) {
