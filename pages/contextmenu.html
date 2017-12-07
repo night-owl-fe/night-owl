@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta lang="zh">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="description" content="">
+  <meta name="keyword" content="">
+  <title></title>
+  <style>
+    #contextmenu {
+      display: none;
+      position: fixed;
+      background: #dd8888;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+<ul id="contextmenu">
+  <li>one</li>
+  <li>two</li>
+  <li>three</li>
+</ul>
+<h1 data-menu="a,b,c">Head1</h1>
+<h2 data-menu="1,2,3">Head2</h2>
+<h3 data-menu="!,@,#">Head3</h3>
+<h4 data-menu="-,=,>">Head4</h4>
+<h5>Head5</h5>
+<h6>Head6</h6>
+<script>
+var contextmenu = true
+var contextmenuElm = document.querySelector('#contextmenu')
+document.oncontextmenu = function () {
+  return contextmenu
+}
+
+document.addEventListener('mousedown', function (e) {
+  var menu = e.target.dataset.menu
+  if (menu) {
+    contextmenu = false
+  } else {
+    contextmenuElm.style.display = 'none'
+  }
+})
+
+document.addEventListener('mouseup', function (e) {
+  contextmenu = true
+  var menu = e.target.dataset.menu
+  if (menu) {
+    contextmenu = false
+    var menus = menu.split(',')
+    var liHtml = menus.map((m) => `<li>${m}</li>`).join('')
+    contextmenuElm.innerHTML = liHtml
+    contextmenuElm.style.top = e.pageY + 'px'
+    contextmenuElm.style.left = e.pageX + 'px'
+    contextmenuElm.style.display = 'block'
+  }
+})
+</script>
+</body>
+</html>
