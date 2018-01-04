@@ -174,4 +174,4 @@ function eventsOnApi (self, name, cb, cxt, once) {
   return self
 }
 
-export default Event
+module.exports = Event
