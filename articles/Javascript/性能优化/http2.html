@@ -1,0 +1,214 @@
+<xmp>
+## 性能优化
+Performance Optimization
+
+:start
+## 优化DNS连接:DNS Prefetching 
+### 使用：chrome://net-internals/#dns 可以查看到DNS预连接的使用情况
+1. rel=“dns-prefetch"
+###  taobao.com首页部分代码：
+  ```html
+  <link  rel="dns-prefetch" href="//g.alicdn.com"/> 
+  <link rel="dns-prefetch" href="//img.alicdn.com"/> 
+  <link rel="dns-prefetch" href="//gm.mmstat.com"/> 
+  ```
+### HTTPS协议下：
+```html
+<meta http-equiv="x-dns-prefetch-control" content="on">
+```
+-  DNS Prefetching ：提前加载域名解析，省去了页面新页面加载的解析时间
+-  A标签的href是可以在chrome、firefox包括高版本的IE，但是在HTTPS下不起作用，需要meta强制开启功能
+-  如果直接做了js的重定向，或者在服务器端做了重定向（JS控制跳转url），没有在link里面手动设置，是不起作用的
+-  只有可缓存的资源：，才可进行预加载，否则浪费资源
+
+```
+```
+  W2. `rel=“preconnect”`
+与：dns-prefetch类似，但是preconnect 解析DNS、还会建立TCP握手连接喝TLS协议。例如：
+
+```html
+<link rel=“preconnect” href=“//example.com”>
+```
+:end
+
+## 静态文件预加载：
+1. rel=“prefetch”
+能够让浏览器预加载一个资源（HTML，JS，CSS或者图片等），可以让用户跳转到其他页面时，响应速度更快。
+```html
+<link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin="use-credentials">
+<link rel="prefetch" href="/library.js" as="script">
+```
+虽然是预加载了，但是页面是不会解析或者JS是不会直接执行的
+```
+```
+2. rel=“prerender”
+```
+<link rel='prerender' href='http://www.pagetoprerender.com'>  
+```
+Pretender：不仅会加载资源，还会解执行页面，进行预渲染，但是这都是根据浏览器自身进行判断。
+  - 分配少量资源对页面进行预渲染
+  - 挂起部分请求直至页面可见时
+  - 可能会放弃预渲染，如果消耗资源过多,只有chrome支持
+  ```
+  ```
+3. rel=“subresource”
+```html
+<link rel=“subresource” href=“index.css”>
+```
+rel=“prefetch”指定了下载后续页面用到资源的低优先级，而rel=“subresource”则是指定当前页面资源的提前加载
+
+
+
+## HTTP/2协议
+### 需求：浏览器、服务器都支持HTTP/2
+
+## HTTP2.最大的改变：引入二进制分帧层
+二进制分帧层：
+  - 不会改动HTTP 的语义，HTTP 方法、状态码、URI及首部字段，等等这些核心概念上一如往常，却能致力于突破上一代标准的性能限制，改进传输性能，实现低延迟和高吞吐量。而之所以叫2.0，是在于新增的二进制分帧层。
+  - 既然又要保证HTTP的各种动词，方法，首部都不受影响，那就需要在应用层(HTTP2.0)和传输层(TCP or UDP)之间增加一个二进制分帧层。
+  - 在二进制分帧层上，HTTP 2.0 会将所有传输的信息分割为更小的消息和帧,并对它们采用二进制格式的编码,其中HTTP1.x的首部信息会被封装到Headers帧，而我们的request body则封装到Data帧里面。 
+```
+```
+- 名词定义： 
+  - 流：已建立的连接上的双向字节流。具有唯一的流ID，客户端发起的为气数ID，服务端发起的为偶数ID。很多个流可以并行的在同一个tcp连接上交换消息
+  - 消息：与逻辑消息对应，比如一个请求或一个响应。由一个或多个帧组成
+  - 帧：HTTP2中最小的通信单位，每个帧都会有帧首部，每个帧活着用来承载HTTP首部或负荷数据，或其他特定类型的帧。帧是遵循二进制编码的
+```
+```
+- 在HTTP2中
+  - 相同域名下的所有通信都在一个连接上完成，
+  - 单个连接中可以承载任意数量的双向流。
+  - 数据流都是以“消息”的形式被发送的，同时消息又由一个或多个帧组成。多个帧之间可以乱序发送，最后根据帧首部的流标识符重新组装。 
+```
+```
+## 性能提升处：
+  - 同一个域名只需要占用一个TCP连接，消除了因多个TCP连接而带来的延时和内存消耗
+  - 单个连接上可以并行交错的请求和响应，之间互不干扰（类似双工通信）
+  - 在HTTP／2中，每个请求都可以带一个31bit的优先值，0表示最高优先级，数值越大优先级越低。优先级的设置，使得客户端、服务端就可以在处理不同流时采取不同的策略，以最优的方式发送流、消息和帧
+
+
+## HTTP/2 优点：
+  - Server Push ：推送文件，不必请求的时候再返回文件
+  - 请求头压缩：请求分为：request header frame + request body frame
+  - 多路复用
+```
+```
+1. Server Push
+  - URL :  https://localhost:3000/
+  - Http2 中的res有push（），而http1.x中的res对象没有push（）
+
+## 首部压缩
+  1. HTTP协议是一种无状态的协议，服务器自身不会保存太多的信息和先前请求过的元数据信息，这就需要客户端每次都使用多个首部字段来描述所传输的资源及其属性，又由于HTTP1.x是以纯文本形式传输的，每次都会给HTTP报文增加500-800字节的负荷，如果算上cookie，这个负荷甚至会增加到上千。
+  ```
+  ```
+  2. HTTP2采用HPACK压缩方法，一边用index mapping table压缩，一边编码，这个table由静态表和动态表组成
+  ```
+  ```
+  - 先用预定义的index mapping table将头部中常用字符串用index来代替
+  - 客户端和服务端使用首部表来跟踪和存储之前发送的每一个键值对。第一次请求时发送过的键值对，第二次再请求时就不再发送了
+  - 在tcp连接期间，客户端和服务端共同维护这个首部表，并且是共同渐进更新的
+  - 每个新的键值对，要么直接添加到首部表尾部，要么替换原有表中的值
+
+
+## 多路复用
+
+- 多路复用：在一个信道上同时传输多路信号或数据流的过程和技术 
+- 多路复用可以将多个低速信道整合到一个高速信道进行传输，从而有效的利用了高速信道。 
+-多路复用技术划分：TDM、FDM、SDM（空分复用）、CDM 
+```
+```
+TDM：高速信道根据时间划分多个时隙供多个低速信道轮流使用，在一个时隙内，只能有一个低速信道占有高速信道的资源 
+```
+```
+FDM：多路复用器将各个低速信道的信号通过调制分布到高速信道的各个频段，然后进行叠加，形成高速信道上传输的信号。在接收端，分路器一般通过带通滤波器分离各个频段，然后转发给相应的低速信道。 
+```
+```
+在光通信领域，根据光波波长的不同进行多路复用的技术：波分复用（WDM） 
+```
+```
+SDM：使用多天线技术，通过波束形成技术将信号对准特定的发射源获接收站进行接收或发送。通过空分复用，多个发射源或者接收站可以同时使用同一个频率。 
+```
+```
+CDM：采用扩频通信技术，各个低速信道可以在同一个地方同时使用相同的频率进行通信，不同的低速信道采用不同的地址码复用整个频段。 
+```
+```
+多址接入：指通信网络具有多个用户通过公共的信道接入到网络的能力。 
+```
+```
+TDMA：是一种为实现共享传输介质或网络的通信技术。它允许多个用户在不同的时隙来使用不同的频率。 
+```
+```
+FDMA：利用不同的频率分割成不同信道的多址技术 
+```
+```
+
+## 流： 
+### 一：流的概念： 
+1.流：服务器和客户端在 HTTP/2 连接内用于交换帧数据的独立双向序列，逻辑上可看做一个较为完整的交互处理单元，即表达一次完整的资源请求-响应数据交换流程；一个业务处理单元，在一个流内进行处理完毕，这个流生命周期完结 
+```
+```
+2.流的特点： 
+  •  一个HTTP／2 连接可同时保持多个打开的流，任一端点交换帧
+  • 流可被客户端或服务器     单独或共享      创建和使用
+  • 流可被任一端关闭
+  • 在流内发送和接收数据 都要按照顺序
+  • 流的标识符自然数表示，1～2^ 31-1 区间，有创建流的终端分配
+  • 流与流之间逻辑上是并行、独立存在
+3.多路复用 
+    流的概念提出—为了多路复用，在单个链接上实现同时进行多个业务单元数据的传输。逻辑图如下：    
+通信中传输的是帧（Frame）的数据 
+```
+```
+## 流：stream：为了实现多路复用 
+  1.  流的优先级（priority）属性建议终端（客户端+服务器端）需要按照优先级值进行资源合理分配，优先级高的需要首先处理，优先级低的可以稍微排队，保证重要数据优先处理
+  2.  流的并发数（或者说同一时间存在的流的个数）初始环境下不少于100个
+  3.  流量控制阀协调网络带宽资源利用，由接收端提出发送端遵守其规则。
+  4.  流具有完整的生命周期，从创建到最终关闭，经历不同阶段
+
+
+## keep live？ 
+    HTTP持久连接 （HTTP persistent connection，也称作HTTP keep-alive 或 HTTP connection reuse）是使用同一个TCP连接来发送和接收多个HTTP请求／应答，而不是为每一个新的请求／应答打开新的连接的方法。Keep-alive：功能避免了建立或者重新建立连接。 
+## 多路复用是什么？ 
+  - HTTP／2的请求的TCP的connection 一旦建立，后续请求以stream方式发送
+  - 每个stream 的基本组成单位是frame（二进制帧），每种frame 又分为多种类型的帧例如：HEADERS Frame（报头帧）、DATA Frame（内容帧）等等
+  - 请求头HEADERS Frame 组成了request，返回头HEADERS Frame 和DATA Frame组成了response，request 和response组成了一个stream
+  ```
+  ```
+## 多路复用和keep alive区别？ 
+  - 线头阻塞（Head-of-Line Blocking），HTTP/1.* 虽然可以采用keep alive 来解决复用TCP的问题，但是无法解决请求阻塞问题；
+  - 所谓请求阻塞意思就是一条TCP的connection 在同一时间只能允许一个请求经过，这样，假如后续请求想要复用这个连接就必须等到前一个完成才行，如上图左边
+  - 因为HTTP／1.* 需要每条请求都是可以识别的，按顺序发送，否则server就无法判断该相应哪个具体的请求。
+  - HTTP／2采用多路复用是指：在同一个域名下，开启一个TCP的connection，每个请求以stream的方式传输，每个stream有唯一标识，connection一旦建立，后续的请求都可以服用这个connection并且可以同时发送，server端可以根据stream的唯一标识来相应对应的请求
+```
+```
+## 多路复用会不会关闭？ 
+  HTTP/2 connections are persistent. For best performance, it is expected that clients will not close connections until it is determined that no further communication with a server is necessary 
+(for example, when a user navigates away from a particular web page)  or until the server closes the connection.
+```
+```
+### 翻译：关闭条件：（独立）
+  - 用户离开这个页面
+  - server主动关闭connection
+
+## 多路复用实践
+在indexHTTP2.html中请求多个h2协议的js文件，在chrome控制台观察Waterfall，可以多个js文件没有几乎是同时进行的，没有js文件被挂起等待时间。
+```
+```
+URL：https://localhost:3000/indexHTTP2.html
+## 总结：
+HTTP2: 
+  1.  多个请求可以合并为一个，在一个请求中请求多个js、css文件，而不是合并js、css文件再发送请求
+  2.  因为HTTP2，可以支持多个请求可以合并为一个，这样，就没有必要将js、css文件合并，然后再发送请求，因为，使用HTTP2后，合并为一个大文件的加载时间反而会比不合并更长
+  3. HTTP/2都是基于https的 
+## HTTP/1.1 与HTTP/2.0  对比：请求300+张图片 
+```
+```
+https://aotu.io/notes/2016/03/17/http2-char/index.html
+
+
+
+</xmp>
+<script 
+src="https://git.oschina.net/diqye/shar/raw/master/lib/impt.js" 
+main="https://git.oschina.net/diqye/shar/raw/master/demo/oscapp.js">
+</script>
