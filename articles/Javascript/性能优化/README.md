@@ -62,6 +62,8 @@
     * 按需异步加载组件
     * 使用keep-alive组件    
     
+9. Webpack
+    * tree-shaking(https://juejin.im/post/5a5652d8f265da3e497ff3de)
     
 # 五阿哥首页优化
    
