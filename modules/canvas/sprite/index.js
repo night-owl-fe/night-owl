@@ -91,14 +91,19 @@ new Vue({
       return new Promise(function (resolve, reject) {
         var reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = function (e) {
+        reader.onload = function () {
           let image = new Image();
           image.src = this.result;
 
           image.onload = () => {
             resolve(image);
           }
+
+          image.onerror = (err) => {
+            reject(err)
+          }
         }
+        reader.onerror
       })
     },
 
