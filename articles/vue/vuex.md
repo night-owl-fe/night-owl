@@ -295,3 +295,7 @@ function commit (_type, _payload, _options) {
     this._subscribers.forEach(sub => sub(mutation, this.state))
   }
 ```
+
+7. vuex插件开发，插件开发比较简单，只是一个不同的函数，vuex在初始化时会调用这些插件，给其传一个Store
+
+的实例，一般store.subscribe监听数据变化就行了
