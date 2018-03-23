@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta lang="zh">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="description" content="">
+  <meta name="keyword" content="">
+  <title></title>
+  <style>
+    body {
+      font-size: 84%;
+    }
+
+    .dustbin {
+      width: 100px;
+      height: 260px;
+      line-height: 1.4;
+      background-color: gray;
+      font-size: 36px;
+      font-family: "微软雅黑", "Yahei Mono";
+      text-align: center;
+      text-shadow: -1px -1px #bbbbbb;
+      float: left;
+    }
+
+    .dragbox {
+      width: 700px;
+      padding-left: 20px;
+      float: left;
+    }
+
+    .draglist {
+      display: inline-block;
+      padding: 10px;
+      margin-bottom: 5px;
+      border: 2px dashed #cccccc;
+      background-color: #eeeeee;
+      cursor: move;
+    }
+
+    .draglist:hover {
+      border-color: #cad5eb;
+      background-color: #f0f3f9;
+    }
+
+    .dragimg {
+      width: 200px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+<div class="dragbox">
+  <div class="draglist" title="拖拽我" draggable="true">
+    <img class="dragimg" src="http://www.topit.cc/uploads/20180201/21/1517491985-ApPXYKbDxW.jpg" alt="">
+  </div>
+  <div class="draglist" title="拖拽我" draggable="true">
+    <img class="dragimg" src="http://images.xuejuzi.cn/1706/1_170621160004_1.jpg" alt="">
+  </div>
+  <div class="draglist" title="拖拽我" draggable="true">
+    <img class="dragimg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp2kCaDxSojHJMu1oVIK-CsPhkESwX9IA2LQuDm8vdimpJo7DF" alt="">
+  </div>
+</div>
+
+<script>
+var $ = function (selector) {
+  if (!selector) { return []; }
+  var arrEle = [];
+  if (document.querySelectorAll) {
+    arrEle = document.querySelectorAll(selector);
+  } else {
+    var oAll = document.getElementsByTagName('div'), lAll = oAll.length;
+    if (lAll) {
+      var i = 0;
+      for (i; i < lAll; i += 1) {
+        if (/^\./.test(selector)) {
+          if (oAll[i].className === selector.replace('.', '')) {
+            arrEle.push(oAll[i]);
+          }
+        } else if (/^#/.test(selector)) {
+          if (oAll[i].id === selector.replace('#', '')) {
+            arrEle.push(oAll[i]);
+          }
+        }
+      }
+    }
+  }
+  return arrEle;
+};
+
+var eleDrags = $('.draglist')
+var dragbox = $('.dragbox')[0]
+var eleDrag, target
+
+for (var i = 0; i < eleDrags.length; i++) {
+  var ele = eleDrags[i]
+  ele.onselectstart = function () {
+    return false
+  }
+
+  ele.ondragstart = function (ev) {
+    console.log('ondragstart')
+    ev.dataTransfer.effectAllowed = 'move'
+    ev.dataTransfer.setDragImage(ev.target, 0, 0)
+    eleDrag = this
+    return true
+  }
+
+  ele.ondragend = function (ev) {
+    console.log('ondragend')
+    ev.dataTransfer.clearData('text')
+    eleDrag = null
+    return false
+  }
+
+  ele.ondragover = function (ev) {
+    if (this === eleDrag) return true
+    target = this
+    this.style.opacity = 0.3
+    ev.preventDefault()
+    return true
+  }
+
+  ele.ondragleave = function () {
+    this.style.opacity = 1
+  }
+}
+
+// 拖拽
+dragbox.ondragover = function (ev) {
+  console.log('ondragover')
+  ev.preventDefault()
+  return true
+}
+
+dragbox.ondragenter = function (ev) {
+  console.log('ondragenter')
+  return true
+}
+
+dragbox.ondrop = function (ev) {
+  console.log('ondrop')
+  console.log(ev.dataTransfer.getData('text'))
+  if (target) {
+    console.log(target === eleDrag)
+    eleDrag.style.opacity = 1
+    target.style.opacity = 1
+    dragbox.insertBefore(eleDrag, target)
+  }
+  return false
+}
+</script>
+</body>
+</html>

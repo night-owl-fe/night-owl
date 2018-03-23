@@ -70,16 +70,16 @@ var $ = function (selector) {
   if (document.querySelectorAll) {
     arrEle = document.querySelectorAll(selector);
   } else {
-    var oAll = document.getElementsByTagName("div"), lAll = oAll.length;
+    var oAll = document.getElementsByTagName('div'), lAll = oAll.length;
     if (lAll) {
       var i = 0;
       for (i; i < lAll; i += 1) {
         if (/^\./.test(selector)) {
-          if (oAll[i].className === selector.replace(".", "")) {
+          if (oAll[i].className === selector.replace('.', '')) {
             arrEle.push(oAll[i]);
           }
         } else if (/^#/.test(selector)) {
-          if (oAll[i].id === selector.replace("#", "")) {
+          if (oAll[i].id === selector.replace('#', '')) {
             arrEle.push(oAll[i]);
           }
         }
@@ -89,23 +89,27 @@ var $ = function (selector) {
   return arrEle;
 };
 
-var eleDustbins = $(".dustbin"), eleDrags = $(".draglist"), lDrags = eleDrags.length, eleRemind = $(".dragremind")[0],
+var eleDustbins = $('.dustbin'),
+  eleDrags = $('.draglist'),
+  lDrags = eleDrags.length,
+  eleRemind = $('.dragremind')[0],
   eleDrag = null;
+
 for (var i = 0; i < lDrags; i += 1) {
   eleDrags[i].onselectstart = function () {
     return false;
   };
   eleDrags[i].ondragstart = function (ev) {
     console.log('ondragstart')
-    ev.dataTransfer.effectAllowed = "move";
-    ev.dataTransfer.setData("text", ev.target.innerHTML);
+    ev.dataTransfer.effectAllowed = 'move';
+    ev.dataTransfer.setData('text', ev.target.innerHTML);
     ev.dataTransfer.setDragImage(ev.target, 0, 0);
     eleDrag = ev.target;
     return true;
   };
   eleDrags[i].ondragend = function (ev) {
     console.log('ondragend')
-    ev.dataTransfer.clearData("text");
+    ev.dataTransfer.clearData('text');
     eleDrag = null;
     return false
   };
@@ -121,7 +125,7 @@ for (var i = 0; i < eleDustbins.length; i++) {
 
   eleDustbin.ondragenter = function (ev) {
     console.log('ondragenter')
-    this.style.color = "#ffffff";
+    this.style.color = '#ffffff';
     return true;
   };
   eleDustbin.ondrop = function (ev) {
@@ -131,7 +135,7 @@ for (var i = 0; i < eleDustbins.length; i++) {
       eleRemind.innerHTML = '<strong>"' + eleDrag.innerHTML + '"</strong>被扔进了垃圾箱';
       eleDrag.parentNode.removeChild(eleDrag);
     }
-    this.style.color = "#000000";
+    this.style.color = '#000000';
     return false;
   };
 }
